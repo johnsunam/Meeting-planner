@@ -1,29 +1,25 @@
 <?php
-$success="";
-if($_SERVER["REQUEST_METHOD"]=="POST"){
-  $title=$_POST["title"];
-  $begin=$_POST["begin"];
-  $end = $_POST["end"];
+session_start();
 
-  //Create connection to db
-  $con=mysqli_connect("localhost","root","","meeting_app");
-  if(!$con){
-    die("Connection failed: " . mysqli_connect_error());
-  }
-
-  $sql="INSERT INTO record_time (title,begin,end) VALUES ('$title','$begin','$end') ";
-  $query=mysqli_query($con,$sql);
-  if($query){
-    $success="Successfully inserted";
-    echo $success;
-    $_POST["title"]="";
-    $_POST["begin"]="";
-    $_POST["end"]="";
-  }
-  else{
-    echo "Error";
+//Create connection to db
+$con=mysqli_connect("localhost","root","","meeting_app");
+if(!$con){
+  die("Connection failed: " . mysqli_connect_error());
+}
+$sql="SELECT * FROM record_time";
+$query=mysqli_query($con,$sql);
+$i=0;
+if($query){
+  if(mysqli_num_rows($query)){
+    while($row=mysqli_fetch_assoc($query)){
+      $data[$i]["title"]=$row["title"];
+      $data[$i]["from"]=$row["begin"];
+      $data[$i]["to"]=$row["end"];
+      $i++;
+    }
   }
 }
+
 ?>
 
 <!doctype html>
@@ -32,30 +28,47 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1.0">
   <title>create-meeting</title>
-  <link href="http://fonts.googleapis.com/css?family=Cuprum:400" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="css/standardize.css">
-  <link rel="stylesheet" href="css/create_meeting-copy-grid.css">
-  <link rel="stylesheet" href="css/create_meeting-copy.css">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="text/javascript" src="js/style.js"></script>
 </head>
-<body class="body page-create_meeting-copy clearfix">
-  <p class="logo">make-Meeting</p>
-  <header class="header"></header>
+<body class="body">
+  <header class="header">
+   <h1 class="logo">make-Meeting</h1>
+   <button class="username btn btn-danger btn-xs" onclick="goTo()"><?php echo $_SESSION['username']; ?></button>
+  </header>
 
-  <p class="text text-1"><a href="meeting.php">home</a></p>
-  <p class="text text-2"><a href="create_meeting-copy.php">record time</a></p>
+  <section>
+    <h1 class="heading">Record Time</h1>
+  </section>
 
-  <section class="content"></section>
-  <p class="heading">Record Time</p>
-  <section class="form-box">
-    <form method="post" action="create_meeting-copy.php">
-    <input class="to" type="text" name="end">
-    <p class="text-to">To</p>
-    <input class="from from-1" type="text" name="begin">
-    <p class="title title-1">Title</p>
-    <button class="submit" type="submit">Submit</button>
-    <p class="from from-2">From</p>
-    <input class="title title-2" type="text" name="title">
-  </form>
+  <section class="content">
+   <div class="container">
+    <div class="row content-color">
+      <div class="col-md-8 col-md-offset-2">
+        <table class="table table-striped data-table">
+         <thead>
+          <th>Title</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Options</th>
+         </thead>
+         <tbody>
+        <?php foreach($data as $data) { ?>
+          <tr>
+           <td><?php echo $data['title']; ?></td>
+           <td><?php echo $data['from']; ?></td>
+           <td><?php echo $data['to']; ?></td>
+           <td><small>View</small> &nbsp;<small>Edit</small>&nbsp; <small>Delete</small></td>
+          </tr>
+        <?php } ?>
+         </tbody>
+        </table>
+        <a href="record-time.php" class="btn btn-primary">New Record</a>
+        <a href="meeting.php" class="btn btn-success">Upcoming Meetings</a>
+      </div>
+    </div>
+   </div>
   </section>
 </body>
 </html>

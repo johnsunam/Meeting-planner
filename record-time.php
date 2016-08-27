@@ -4,9 +4,8 @@ session_start();
 $success="";
 if($_SERVER["REQUEST_METHOD"]=="POST"){
   $title=$_POST["title"];
-  $detail=htmlspecialchars($_POST["meeting-detail"]);
-  $created_date = date("Y-m-d H:i:s");
-  $updated_date = date("Y-m-d H:i:s");
+  $begin=$_POST["begin"];
+  $end = $_POST["end"];
 
   //Create connection to db
   $con=mysqli_connect("localhost","root","","meeting_app");
@@ -14,15 +13,17 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
     die("Connection failed: " . mysqli_connect_error());
   }
 
-  $sql="INSERT INTO meeting (title,description,created_at,updated_at) VALUES ('$title','$detail','$created_date','$updated_date') ";
+  $sql="INSERT INTO record_time (title,begin,end) VALUES ('$title','$begin','$end') ";
   $query=mysqli_query($con,$sql);
   if($query){
     $success="Successfully inserted";
+    echo $success;
     $_POST["title"]="";
-    $_POST["meeting-detail"]="";
+    $_POST["begin"]="";
+    $_POST["end"]="";
   }
   else{
-    $success="Error";
+    echo "Error";
   }
 }
 ?>
@@ -44,7 +45,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
   </header>
 
   <section>
-    <h1 class="heading">New Meeting</h1>
+    <h1 class="heading">New Record Time</h1>
   </section>
 
   <section class="content">
@@ -52,19 +53,23 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
     <div class="row content-color">
       <div class="col-md-8 col-md-offset-2">
         <p class="bg-success"><?php echo $success; ?></p>
-        <form method="post" action="create_meeting.php">
+        <form method="post" action="record-time.php">
           <div class="form-group">
             <label for="title">Title</label>
             <input type="text" name="title" class="form-control" id="title" placeholder="Title">
           </div>
           <div class="form-group">
-            <label for="details">Meeting Details</label>
-            <textarea id="details" class="form-control" rows="3" name="meeting-detail"></textarea>
+            <label for="begin">Start Time</label>
+            <input type="text" name="begin" class="form-control" id="begin" placeholder="Start Time">
           </div>
-          <button class="btn btn-default" type="submit">Create</button>
+          <div class="form-group">
+            <label for="end">End Time</label>
+            <input type="text" name="end" class="form-control" id="end" placeholder="End Time">
+          </div>
+          <button class="btn btn-default" type="submit">Record</button>
         </form>
         <hr/>
-        <a href="meeting.php" class="btn btn-primary">Back</a>
+        <a href="create_meeting-copy.php" class="btn btn-primary">Back</a>
       </div>
     </div>
    </div>

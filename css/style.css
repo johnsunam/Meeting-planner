@@ -1,0 +1,29 @@
+.header{
+  background-color: #87709c;
+  height: 83px;
+  color:red;
+  margin: -2% 0%;
+}
+.logo{
+  font-size: 34px;
+  color:#33ead7;
+  padding: 23px 18px;
+}
+.heading{
+  padding: 2% 7%;
+}
+.data-table{
+  margin:5% 0;
+}
+.register-panel{
+  margin: 108px 0px;
+}
+.content-color{
+  background-color: #28ECD7;
+}
+.username{
+  position: absolute;
+  top:34px;
+  right:7%;
+  color:#49f8eb;
+}

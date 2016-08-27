@@ -1,4 +1,5 @@
 <?php
+session_start();
 //Create connection to db
 $con=mysqli_connect("localhost","root","","meeting_app");
 if(!$con){
@@ -6,13 +7,17 @@ if(!$con){
 }
 $sql="SELECT title,updated_at FROM meeting";
 $query=mysqli_query($con,$sql);
+$i=0;
 if($query){
   if(mysqli_num_rows($query)){
     while($row=mysqli_fetch_assoc($query)){
-      echo $row["title"]."<br/>";
+      $data[$i]["title"]=$row["title"];
+      $data[$i]["updated"]=$row["updated_at"];
+      $i++;
     }
   }
 }
+
 ?>
 
 <!doctype html>
@@ -21,25 +26,48 @@ if($query){
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1.0">
   <title>Create-meeting</title>
-  <link href="http://fonts.googleapis.com/css?family=Cuprum:400" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="css/standardize.css">
-  <link rel="stylesheet" href="css/meeting-grid.css">
-  <link rel="stylesheet" href="css/meeting.css">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="text/javascript" src="js/style.js"></script>
 </head>
-<body class="body page-meeting clearfix">
-  <section class="menu">
-    <p class="record-time"><a href="create_meeting-copy.php">record time</a></p>
-    <p class="home"><a href="meeting.php">home</a></p>
+
+<body class="body">
+  <header class="header">
+   <h1 class="logo">make-Meeting</h1>
+   <button class="username btn btn-danger btn-xs" onclick="goTo()"><?php echo $_SESSION['username']; ?></button>
+  </header>
+
+  <section>
+    <h1 class="heading">Upcoming Meetings</h1>
+
   </section>
-  <section class="content content-1"></section>
-  <p class="heading">Upcoming Meetings</p>
-  <p class="logo">make-Meeting</p>
-  <header class="header"></header>
-  <section class="content content-2">
-    <p class="options">Options</p>
-    <p class="updatement">Last Updated</p>
-    <p class="description">Description</p>
+
+  <section class="content">
+   <div class="container">
+    <div class="row content-color">
+      <div class="col-md-8 col-md-offset-2">
+        <table class="table table-striped data-table">
+         <thead>
+          <th>Description</th>
+          <th>Last Updated</th>
+          <th>Options</th>
+         </thead>
+         <tbody>
+         <?php foreach($data as $data){ ?>
+          <tr>
+           <td><?php echo $data["title"]; ?></td>
+           <td><?php echo $data["updated"]; ?></td>
+           <td><small>View</small> &nbsp;<small>Edit</small>&nbsp; <small>Delete</small></td>
+          </tr>
+         <?php } ?>
+         </tbody>
+        </table>
+        <a href="create_meeting.php" class="btn btn-primary">Create Meeting</a>
+        <a href="create_meeting-copy.php" class="btn btn-success">Record Hour</a>
+      </div>
+    </div>
+   </div>
   </section>
-  <button class="create-meeting">Create Meeting</button>
+
 </body>
 </html>
