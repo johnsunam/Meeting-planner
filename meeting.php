@@ -1,7 +1,8 @@
 <?php
 session_start();
 //Create connection to db
-$con=mysqli_connect("localhost","root","","meeting_app");
+//$con=mysqli_conne ct("localhost","root","","meeting_app");
+$con=mysqli_connect("localhost","pinesoft_john","john123",,"pinesoft_john");
 if(!$con){
   die("Connection failed: " . mysqli_connect_error());
 }

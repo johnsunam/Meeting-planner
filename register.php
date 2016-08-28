@@ -7,7 +7,9 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
   $email=$_POST["email"];
 
   //Create connection to db
-  $con=mysqli_connect("localhost","root","","meeting_app");
+  //$con=mysqli_connect("localhost","root","","meeting_app");
+  //$con=mysqli_connect("server27.000webhost.com","a2230193_john","","123abc");
+  $con=mysqli_connect("localhost","pinesoft_john","john123","pinesoft_john");
   if(!$con){
     die("Connection failed: " . mysqli_connect_error());
   }

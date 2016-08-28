@@ -9,7 +9,8 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
   $updated_date = date("Y-m-d H:i:s");
 
   //Create connection to db
-  $con=mysqli_connect("localhost","root","","meeting_app");
+  //$con=mysqli_connect("localhost","root","","meeting_app");
+  $con=mysqli_connect("localhost","pinesoft_john","john123","pinesoft_john");
   if(!$con){
     die("Connection failed: " . mysqli_connect_error());
   }
